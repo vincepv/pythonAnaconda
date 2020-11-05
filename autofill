@@ -1,0 +1,8 @@
+import pandas as pd
+monFichier = '/Users/VPV/Desktop/com.csv' 
+input = (monFichier)
+df = pd.read_csv(input,low_memory = False)
+
+df=df.ffill(axis = 0)
+
+df.to_csv("/Users/VPV/Desktop/Out.csv",header=True,index=False,encoding="windows-1252")

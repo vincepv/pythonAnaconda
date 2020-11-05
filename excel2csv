@@ -1,0 +1,42 @@
+#
+# Vincent PAUL-VICTOR support@digitalebox.fr
+#
+# converti les excels en csv puis fusionne en 1 seul csv
+
+
+import pandas as pd
+import glob
+
+# indiquer le nom du fichier 'repo/dossier/dossierAvecExcel'
+
+dossierExcel = r'/Users/VPV/Desktop/test' 
+all_files = glob.glob(dossierExcel + "/*.xlsx")
+
+li = []
+
+for filename in all_files:
+    df = pd.read_excel(filename, index_col=None, header=0)
+    li.append(df)
+
+df = pd.concat(li, axis=0, ignore_index=False, sort=True)
+
+
+df.to_csv('/Users/VPV/Desktop/Draft.csv', encoding= 'utf8', index=False, )
+
+df = pd.read_csv('/Users/VPV/Desktop/Draft.csv')
+
+df=df.replace('Ã©', 'é', regex=True)
+df=df.replace('Ã¨', 'è', regex=True)
+df=df.replace('Ã«', 'ë', regex=True)
+df=df.replace('Ã§', 'ç', regex=True)
+df=df.replace('Ã®', 'ï', regex=True)
+df=df.replace('Ã‰', 'E', regex=True)
+df=df.replace('Ã”', 'O', regex=True)
+df=df.replace('Ã¢', 'â', regex=True)
+df=df.replace('Ã¯', 'ï', regex=True)
+df=df.replace('Ã´', 'ô', regex=True)
+df=df.replace('Ãª', 'ê', regex=True)
+df=df.replace('Ãˆ', 'E', regex=True)
+
+
+df.to_csv('/Users/VPV/Desktop/CleanFile.csv', encoding= 'utf8', index=False, )
