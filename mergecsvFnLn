@@ -4,10 +4,10 @@ import pandas as pd
 
 # csv en utf8
 # fichier csv liste electorale ville, cp, adresse
-input1='/Users/VPV/Desktop/adresse.csv' 
+input1='/Users/VPV/Dropbox/DigitaleBox/DB Relation Client/Base de données/Benoit Jimenez Garges-les-gonesse/201117/draft/LE2020.csv' 
 
 # fichier avec nom prenom et email mobile
-input2='/Users/VPV/Desktop/NomPrenom.csv'
+input2='/Users/VPV/Dropbox/DigitaleBox/DB Relation Client/Base de données/Benoit Jimenez Garges-les-gonesse/201117/draft/mobile.csv'
 
 
 df1 = pd.read_csv(input1)
@@ -49,8 +49,8 @@ dfdup2.to_csv('/Users/VPV/Desktop/Duplicate2.csv', encoding='utf8', index=False)
 
 # supprime les duplicates du fichier merge
 
-df1=df1.drop_duplicates(subset=['prenom', 'nom'],inplace=False)
-df2=df2.drop_duplicates(subset=['prenom', 'nom'],inplace=False)
+df1=df1.drop_duplicates(subset=['prenom', 'nom'],keep=False)
+df2=df2.drop_duplicates(subset=['prenom', 'nom'],keep=False)
 
 
 

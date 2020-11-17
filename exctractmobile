@@ -1,0 +1,22 @@
+
+import pandas as pd
+import numpy as np
+monFichier = '/Users/VPV/Dropbox/DigitaleBox/DB Relation Client/Base de données/Benoit Jimenez Garges-les-gonesse/201116munic2020/draft/mobile2020.csv' 
+monFichier
+df = pd.read_csv(monFichier,low_memory = False,encoding="windows-1252")
+
+df['fixe']= df['fixe'].astype(str)
+
+
+df.insert(loc=0, column='extractionmobile', value='')
+df['extractionmobile']=df['fixe'].str.findall('^6.+|^7.+')      
+df['mobile']=df['mobile'].fillna(df['extractionmobile'])
+
+# clean mobile format
+df['mobile']=df['mobile'].astype(str)
+df['mobile']=df['mobile'].str.replace('[', '', regex=True)
+df['mobile']=df['mobile'].str.replace(']', '', regex=True)
+
+
+
+df.to_csv("/Users/VPV/Desktop/Out.csv",header=True,index=False,encoding="windows-1252")
