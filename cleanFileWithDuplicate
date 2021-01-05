@@ -1,11 +1,13 @@
-#Script DigitaleBox for clean csv file
-#Vincent PAUL-VICTOR support@digitalebox.fr
+#Script DigitaleBox pour prétraitement des fichiers
+# 2020-11-03 - Vincent PAUL-VICTOR support@digitalebox.fr
 # 
 # PYTHON PANDAS NUMPY
-# 1/ CSV type 
-# csv 
-# delimitor , 
-# encoding utf-8
+# 1/ FORMAT DU CSV
+#
+# le fichier source doit être en 
+# __csv 
+# __séparateur , 
+# __utf-8
 #
 # 
 # 2/ RENOMMER LES COLONNES DU CSV
@@ -25,10 +27,7 @@
 # __'email'
 # __'mobile' 
 
-# EN CAS D'ERREUR : 
-#    changer le nom des colonnes 
-#   mettre en UTF8
-#
+# EN CAS D'ERREUR : changer le nom des colonnes
 # 3/ INDIQUER LE FICHIER A TRAITER
 # 4/ INDIQUER LE FICHIER DE SORTIE
 
@@ -37,15 +36,16 @@
 
 import pandas as pd
 import numpy as np
-monFichier = '/Users/VPV/Desktop/test.csv' 
-
-df = pd.read_csv( monFichier ,low_memory = False)
+monFichier = '' 
+input = (monFichier)
+df = pd.read_csv(input,low_memory = False)
 
 
 
 motclef = ''
 
-# create column if not in csv
+
+# creation de colonne si absent du fichier
 
 
 if 'categorie' not in df:
@@ -79,7 +79,6 @@ else :
     df['cp']=df['cp'].fillna('N/A')
 
 
-
 if 'adresse' not in df:
 	df.insert(loc=0, column='adresse', value='N/A')
 else : 
@@ -110,9 +109,9 @@ df['email']=df['email'].str.replace(';', '.', regex=True)
 df['email']=df['email'].str.replace('^ ', '', regex=True)
 df['email']=df['email'].str.replace(' $', '', regex=True)
     
-
-
-# Change date dd-mm-yyyy > yyyy-mm-dd
+    
+    
+# Change le format date dd-mm-yyyy > yyyy-mm-dd
 
 
 df['date']=df['date'].astype(str)
@@ -129,7 +128,7 @@ df['date'] = df['date'].replace(['--na','--N/'],'N/A' , regex=True)
 df=df.drop(['jour', 'mois', 'annee'], axis=1)
 
 
-# clean gender
+# Sexe change monsieur madame et les cellules vides par 0,1,2
 
 
 df['sexe']=df['sexe'].astype(str)
@@ -139,7 +138,7 @@ df['sexe']=df['sexe'].replace(['monsieur','Monsieur','MONSIEUR','Mr', 'MR','M.',
 df['sexe']=df['sexe'].replace(['madame','Madame','MADAME','Ms','MS','Mme','MME','Mlle','MLLE','Mme','F','mme'],'1')    
 
 
-# clean for geocoding
+#Adresse enlever caractères spéciaux pour la geolocalisation
 
 
 df['adresse']=df['adresse'].astype(str)
@@ -148,14 +147,14 @@ df['adresse']=df['adresse'].str.replace('^ ', '', regex=True)
 df['adresse']=df['adresse'].str.replace(' $', '', regex=True)
 
 
-# zip code
+# Code postal
 
 
 df['cp']=df['cp'].astype(str)
 df['cp']=df['cp'].str.replace('\.0$', '', regex=True)
 
 
-# clean mobile
+# mobile supprime caractères spéciaux
 
 
 df['mobile']=df['mobile'].astype(str)
@@ -171,9 +170,10 @@ df['mobile']=df['mobile'].str.replace('^6', '+336', regex=True)
 df['mobile']=df['mobile'].str.replace('^7', '+337', regex=True)
 
 
+
+
+
 # extract mobile and mobile phone
-
-
 df.insert(loc=0, column='cleanMobile', value='N/A')
 df.insert(loc=0, column='cleanFixe', value='N/A')
 
@@ -191,9 +191,15 @@ df['cleanFixe']=df['cleanFixe'].str.replace('[', '', regex=True)
 df['cleanFixe']=df['cleanFixe'].str.replace(']', '', regex=True)
 df['cleanFixe']=df['cleanFixe'].str.replace('\'', '', regex=True)
 
+# Boolean duplicate for email and mobile
+
+df.insert(loc=0, column='duplicateEmail', value='')
+df['duplicateEmail']=df.duplicated(subset=['email'], keep='first')
+
+df.insert(loc=0, column='duplicateMobile', value='')
+df['duplicateMobile']=df.duplicated(subset=['mobile'], keep='first')
 
 # split master csv in package
-
 
 groups = df.groupby(np.arange(len(df.index))/24000)
 for (frameno, frame) in groups:
