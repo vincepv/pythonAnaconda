@@ -1,14 +1,13 @@
 
 import pandas as pd
 import numpy as np
-monFichier = '/Users/VPV/Desktop/test.csv'
+monFichier = ''
 
 
 df = pd.read_csv( monFichier ,low_memory = False)
 
 
-# rename columns, strip diacritics,lower case, strip white space
-#df = df.columns.str.strip()
+
 
 motclef = ''
 

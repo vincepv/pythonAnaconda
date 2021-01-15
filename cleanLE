@@ -44,8 +44,7 @@
 import pandas as pd
 import numpy as np
 monFichier = '' 
-input = (monFichier)
-df = pd.read_csv(input,low_memory = False)
+df = pd.read_csv(monFichier,low_memory = False)
 
 
 
