@@ -1,15 +1,48 @@
+#Script DigitaleBox for clean csv file
+#Vincent PAUL-VICTOR support@digitalebox.fr
+# 
+# PYTHON PANDAS NUMPY
+# 1/ CSV type 
+# csv 
+# delimitor , 
+# encoding utf-8
+#
+# 
+# 2/ RENOMMER LES COLONNES DU CSV
+#
+# Pas besoin de créer des colonnes vides, le script crée des colonnes si absentes 
+# Il faut impérativement renommer les colonnes existantes du csv :
+#
+# __'prenom' (colonnes avec l'ensemble des prénoms)
+# __'nom' 
+# __'sexe' (civilité, genre)
+# --'adresse'
+# __'cp' (code postal)
+# __'ville'
+# __'date' (date de naissance au format jj/mm/aaaa)
+# __'note'
+# __'mot clef'
+# __'email'
+# __'mobile' 
+
+# EN CAS D'ERREUR : 
+#   changer le nom des colonnes 
+#   mettre en UTF8
+#
+# 3/ INDIQUER LE FICHIER A TRAITER
+# 4/ INDIQUER LE FICHIER DE SORTIE
+
 
 import pandas as pd
 import numpy as np
-monFichier = ''
+monFichier = '/Users/VPV/Desktop/draft.csv'
 
 
 df = pd.read_csv( monFichier ,low_memory = False)
 
 
-
-
 motclef = ''
+
 
 # create column if not in csv
 
@@ -26,7 +59,11 @@ else :
     df['sexe']=df['sexe'].fillna('N/A')
     
 if 'prenom' not in df:
-    df.insert(loc=0, column='prenom', value='prenom a renseigner') 
+    df.insert(loc=0, column='prenom', value='') 
+
+if 'nom' not in df:
+    df.insert(loc=0, column='nom', value='') 
+
 if 'pays' not in df:
 	df.insert(loc=0, column='pays', value='FR')
 else:
@@ -65,7 +102,30 @@ if 'email' not in df:
 else:
     df['email']=df['email'].fillna('')
 
- 
+
+    
+    
+#remove duplicate email and mobile, keep first, keep row for duplicates
+
+df.loc[df['email'].duplicated(), ['email']] = ''
+df.loc[df['mobile'].duplicated(), ['mobile']] = ''    
+
+
+# fill empty firstname and name with organisation
+
+
+if 'organisme' in df:
+    df['nom'] = df['nom'].fillna(df['organisme'])
+    df['prenom'] = df['prenom'].fillna(df['organisme'])
+
+df['nom'] = df['nom'].str.replace('\d','',regex=True)
+df['prenom'] = df['prenom'].str.replace('\d','',regex=True)
+    
+df['nom'] = df['nom'].str.strip()
+df['prenom'] = df['prenom'].str.strip()
+
+
+
     
 # Email 
 
@@ -76,16 +136,6 @@ df['email']=df['email'].str.replace(';', '.', regex=True)
 df['email']=df['email'].str.replace('^ ', '', regex=True)
 df['email']=df['email'].str.replace(' $', '', regex=True)
     
-
-    
-#remove duplicate email and mobile, keep first keep row https://stackoverflow.com/questions/52338468/python-pandas-remove-duplicate-cells-keep-the-rows
-
-
-df.loc[df['email'].duplicated(), ['email']] = ''
-df.loc[df['mobile'].duplicated(), ['mobile']] = ''
-
-
-
 
 
 
