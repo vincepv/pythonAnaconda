@@ -35,7 +35,7 @@
 
 import pandas as pd
 import numpy as np
-monFichier = '/Users/VPV/Desktop/draft.csv'
+monFichier = ''
 
 
 df = pd.read_csv( monFichier ,low_memory = False)
@@ -104,14 +104,10 @@ else:
 
 
     
-    
-#remove duplicate email and mobile, keep first, keep row for duplicates
-
-df.loc[df['email'].duplicated(), ['email']] = ''
-df.loc[df['mobile'].duplicated(), ['mobile']] = ''    
 
 
-# fill empty firstname and name with organisation
+
+# fill empty firstname and name with organisation, then clean it
 
 
 if 'organisme' in df:
@@ -120,6 +116,12 @@ if 'organisme' in df:
 
 df['nom'] = df['nom'].str.replace('\d','',regex=True)
 df['prenom'] = df['prenom'].str.replace('\d','',regex=True)
+
+df['nom'] = df['nom'].str.replace('.','',regex=True)
+df['prenom'] = df['prenom'].str.replace('.','',regex=True)
+
+df['nom'] = df['nom'].str.replace('&','et',regex=True)
+df['prenom'] = df['prenom'].str.replace('&','et',regex=True)
     
 df['nom'] = df['nom'].str.strip()
 df['prenom'] = df['prenom'].str.strip()
@@ -196,6 +198,13 @@ df['mobile']=df['mobile'].str.replace('^06', '+336', regex=True)
 df['mobile']=df['mobile'].str.replace('^07', '+337', regex=True)
 df['mobile']=df['mobile'].str.replace('^6', '+336', regex=True)
 df['mobile']=df['mobile'].str.replace('^7', '+337', regex=True)
+
+
+    
+#remove duplicate email and mobile, keep first, keep row for duplicates
+
+df.loc[df['email'].duplicated(), ['email']] = ''
+df.loc[df['mobile'].duplicated(), ['mobile']] = ''    
 
 
 # extract mobile and mobile phone
