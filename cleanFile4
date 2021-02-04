@@ -37,7 +37,6 @@ import pandas as pd
 import numpy as np
 monFichier = ''
 
-
 df = pd.read_csv( monFichier ,low_memory = False)
 
 
@@ -188,6 +187,7 @@ df['cp']=df['cp'].str.replace('\.0$', '', regex=True)
 
 
 df['mobile']=df['mobile'].astype(str)
+df['mobile']=df['mobile'].str.replace('.0$', '', regex=True)
 df['mobile']=df['mobile'].str.replace(' ', '', regex=True)
 df['mobile']=df['mobile'].str.replace('.', '', regex=True)
 df['mobile']=df['mobile'].str.replace('-', '', regex=True)
