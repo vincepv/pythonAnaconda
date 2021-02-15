@@ -185,4 +185,20 @@ df['mobile']=df['mobile'].str.replace('^07', '+337', regex=True)
 df['mobile']=df['mobile'].str.replace('^6', '+336', regex=True)
 df['mobile']=df['mobile'].str.replace('^7', '+337', regex=True)
 
-df.to_csv("/Users/VPV/Desktop/pandas/Out.csv",header=True,index=False,encoding="utf8")
+
+# split dataframe in package
+
+max_number_line_file = 24000 
+number_chunk = math.ceil(len(df)/max_number_line_file)
+df=np.array_split(df,number_chunk)
+
+
+# df[0] = first array, df[1] second array, last array df[n-1]. Print each array
+
+i = number_chunk-1
+
+while i > -1 :
+    part = i
+    df[part].to_csv("/Users/VPV/Desktop/pandas/Out%s.csv" % part, header=True,index=False,encoding="utf8")
+    i= i-1
+

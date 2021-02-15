@@ -1,4 +1,3 @@
-
 #Script DigitaleBox for clean csv file
 #Vincent PAUL-VICTOR support@digitalebox.fr
 # 
@@ -205,7 +204,6 @@ df['mobile']=df['mobile'].str.replace('^07', '+337', regex=True)
 df['mobile']=df['mobile'].str.replace('^6', '+336', regex=True)
 df['mobile']=df['mobile'].str.replace('^7', '+337', regex=True)
 
-
     
 #remove duplicate email and mobile, keep first, keep row for duplicates
 
@@ -233,11 +231,4 @@ df['cleanFixe']=df['cleanFixe'].str.replace('[', '', regex=True)
 df['cleanFixe']=df['cleanFixe'].str.replace(']', '', regex=True)
 df['cleanFixe']=df['cleanFixe'].str.replace('\'', '', regex=True)
 
-
-
-# split master csv in package
-
-
-groups = df.groupby(np.arange(len(df.index))/24000)
-for (frameno, frame) in groups:
-    frame.to_csv("/Users/VPV/Desktop/Out%s.csv" % frameno,header=True,index=False,encoding="utf8")
+df.to_csv("/Users/VPV/Desktop/pandas/Out.csv",header=True,index=False,encoding="utf8")
