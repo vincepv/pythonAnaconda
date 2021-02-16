@@ -35,7 +35,6 @@
 # EN CAS D'ERREUR : changer le nom des colonnes
 #
 # 3/ INDIQUER LE FICHIER A TRAITER
-#
 # 4/ INDIQUER LE FICHIER DE SORTIE
 
 
@@ -198,7 +197,5 @@ df=np.array_split(df,number_chunk)
 i = number_chunk-1
 
 while i > -1 :
-    part = i
-    df[part].to_csv("/Users/VPV/Desktop/pandas/Out%s.csv" % part, header=True,index=False,encoding="utf8")
+    df[i].to_csv("/Users/VPV/Desktop/pandas/Out%s.csv" % i , header=True,index=False,encoding="utf8")
     i= i-1
-
