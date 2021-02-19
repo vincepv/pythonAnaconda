@@ -1,5 +1,0 @@
-import pandas as pd
-
-df = pd.concat(pd.read_excel('', sheet_name=None), ignore_index=True)
-
-df.to_csv('/Users/VPV/Desktop/pandas/out.csv')
