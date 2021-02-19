@@ -1,0 +1,19 @@
+import pandas as pd
+monFichier = '/Users/VPV/Desktop/divon/asso.csv' 
+input = (monFichier)
+df = pd.read_csv(input)
+
+
+#extract email and creat a column
+
+
+df['email']=df['data'].str.extract(pat="([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)")
+
+df['mobile']=df['data'].str.extract(pat="\d")
+
+
+
+# create file
+
+
+df.to_csv("/Users/VPV/Desktop/Out.csv",header=True,index=False,encoding="utf8")
