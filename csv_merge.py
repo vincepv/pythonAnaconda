@@ -5,6 +5,9 @@ import pandas as pd
 import glob
 
 def csv_merge(folder_csv): 
+    """
+    indique le dossier csv à traiter
+    """
 	all_files = glob.glob(folder_csv + "/*.csv")
 
 	li = []
@@ -15,4 +18,4 @@ def csv_merge(folder_csv):
 
 	df = pd.concat(li, axis=0, ignore_index=False, sort=True)
 
-	df.to_csv('/Users/VPV/Desktop/DraftCsvMerge.csv', encoding= 'utf8', index=False, )
+	df.to_csv('/Users/VPV/Desktop/DraftCsvMerge.csv', encoding= 'utf8', index=False)
