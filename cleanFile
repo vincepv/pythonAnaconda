@@ -105,6 +105,9 @@ df['prenom'] = df['prenom'].str.strip()
 df['email']=df['email'].astype(str)
 df['email']=df['email'].str.replace(',', '.', regex=True)
 df['email']=df['email'].str.replace(';', '.', regex=True)
+df['email']=df['email'].str.replace('ç', 'c', regex=True)
+df['email']=df['email'].str.replace('é', 'e', regex=True)
+df['email']=df['email'].str.replace('è', 'e', regex=True)
 df['email']=df['email'].str.strip()
     
 # Consider date as a string, change date dd-mm-yyyy > yyyy-mm-dd
