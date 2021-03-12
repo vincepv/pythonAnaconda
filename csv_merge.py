@@ -1,4 +1,3 @@
-# Vincent PAUL-VICTOR support@digitalebox.fr
 # merge a folder with utf8 csv in one master csv file
 
 import pandas as pd

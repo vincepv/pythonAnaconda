@@ -1,4 +1,3 @@
-# Vincent PAUL-VICTOR support@digitalebox.fr
 # convert excel folder in one master utf8 csv file
 
 import pandas as pd

@@ -1,58 +1,34 @@
-#Script DigitaleBox for clean csv file
-#Vincent PAUL-VICTOR support@digitalebox.fr
-# 
-# PYTHON PANDAS NUMPY
-# 1/ CSV type 
-# csv 
-# delimitor , 
-# encoding utf-8
+# Script DigitaleBox for clean csv file
+# csv delimitor , encoding utf-8
+# column must be renamed
 #
-# 
-# 2/ RENOMMER LES COLONNES DU CSV
-#
-# Pas besoin de créer des colonnes vides, le script crée des colonnes si absentes 
-# Il faut impérativement renommer les colonnes existantes du csv :
-#
-# __'prenom' (colonnes avec l'ensemble des prénoms)
+# __'prenom' 
 # __'nom' 
-# __'sexe' (civilité, genre)
+# __'sexe' 
 # --'adresse'
-# __'cp' (code postal)
+# __'cp' 
 # __'ville'
 # __'date' (date de naissance au format jj/mm/aaaa)
 # __'note'
 # __'mot clef'
 # __'email'
 # __'mobile' 
-
-# EN CAS D'ERREUR : 
-#   changer le nom des colonnes 
-#   mettre en UTF8
-#
-# 3/ INDIQUER LE FICHIER A TRAITER
-# 4/ INDIQUER LE FICHIER DE SORTIE
-
+# Don't forget to mentioned input file and output file
 
 import pandas as pd
 import numpy as np
-monFichier = ''
+myFile = ''
 
-df = pd.read_csv( monFichier ,low_memory = False)
-
+df = pd.read_csv( myFile ,low_memory = False)
 
 motclef = ''
-
-
 
 # clean header 
 
 df.columns = df.columns.str.lower()
 df.columns = df.columns.str.strip()
 
-
-
 # create column if not in csv
-
 
 if 'categorie' not in df:
 	df.insert(loc=0, column='categorie', value='2')    
@@ -88,14 +64,11 @@ if 'cp' not in df:
 else : 
     df['cp']=df['cp'].fillna('N/A')
 
-
-
 if 'adresse' not in df:
 	df.insert(loc=0, column='adresse', value='N/A')
 else : 
     df['adresse']=df['adresse'].fillna('N/A')
     
-
 if 'date' not in df:
 	df.insert(loc=0, column='date', value='N/A')
 if 'mobile' not in df:
@@ -103,19 +76,13 @@ if 'mobile' not in df:
 else:
     df['mobile']=df['mobile'].fillna('')
 
-
 if 'email' not in df:
     df.insert(loc=0, column='email', value='N/A')
 else:
     df['email']=df['email'].fillna('')
 
 
-    
-
-
-
 # fill empty firstname and name with organisation, then clean it
-
 
 if 'organisme' in df:
     df['nom'] = df['nom'].fillna(df['organisme'])
@@ -133,22 +100,14 @@ df['prenom'] = df['prenom'].str.replace('&','et',regex=True)
 df['nom'] = df['nom'].str.strip()
 df['prenom'] = df['prenom'].str.strip()
 
-
-
-    
 # Email 
-
 
 df['email']=df['email'].astype(str)
 df['email']=df['email'].str.replace(',', '.', regex=True)
 df['email']=df['email'].str.replace(';', '.', regex=True)
 df['email']=df['email'].str.strip()
     
-
-
-
 # Consider date as a string, change date dd-mm-yyyy > yyyy-mm-dd
-
 
 df['date']=df['date'].astype(str)
 # creation d'une colonnes qui va recevoir l'extraction de la date 
@@ -163,9 +122,7 @@ df['date'] = df['annee']+ "-" + df['mois']+ "-" + df['jour']
 df['date'] = df['date'].replace(['--na','--N/'],'N/A' , regex=True)
 df=df.drop(['jour', 'mois', 'annee'], axis=1)
 
-
 # clean gender
-
 
 df['sexe']=df['sexe'].astype(str)
 df['sexe']=df['sexe'].str.replace('\.0$', '', regex=True)
@@ -175,7 +132,6 @@ df['sexe']=df['sexe'].replace(['madame','Madame','MADAME','Ms','MS','Mme','MME',
 
 
 # clean for geocoding
-
 
 df['adresse']=df['adresse'].astype(str)
 df['adresse']=df['adresse'].str.replace(',', '', regex=True)
