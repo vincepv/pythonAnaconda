@@ -1,4 +1,4 @@
 # pythonAnaconda
 
-backup from Pyhton Pandas 
-csv excel reformat for Digitalebox bulk insert
+backup Pyhton Pandas Numpy
+csv excel reformat for Digitalebox bulk insert process
