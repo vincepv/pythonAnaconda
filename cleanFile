@@ -13,13 +13,13 @@
 # __'mot clef'
 # __'email'
 # __'mobile' 
-# Don't forget to mentioned input file and output file
+# Don't forget to mentioned my_file (old) and my_clean_file (new)
 
 import pandas as pd
 import numpy as np
-myFile = ''
-
-df = pd.read_csv( myFile ,low_memory = False)
+my_file = '/Users/VPV/Desktop/test.csv'
+my_clean_file = '/Users/VPV/Desktop/pandas/Clean.csv'
+df = pd.read_csv( my_file ,low_memory = False)
 
 motclef = ''
 
@@ -36,6 +36,8 @@ if 'note' not in df:
 	df.insert(loc=0, column='note', value='')
 if 'mot clef' not in df:
 	df.insert(loc=0, column='mot clef', value=motclef)
+else:
+    df['mot clef']=df['mot clef']+','+motclef
 if 'sexe' not in df:
 	df.insert(loc=0, column='sexe', value='0')
 else :
@@ -82,30 +84,24 @@ else:
     df['email']=df['email'].fillna('')
 
 
-# fill empty firstname and name with organisation, then clean it
+# fill empty firstname and lastname with organisation, then clean it
 
 if 'organisme' in df:
     df['nom'] = df['nom'].fillna(df['organisme'])
     df['prenom'] = df['prenom'].fillna(df['organisme'])
 
-df['nom'] = df['nom'].str.replace('\d','',regex=True)
-df['nom'] = df['nom'].str.replace('.','',regex=True)
-df['nom'] = df['nom'].str.replace('&','et',regex=True)
+dic_organisme = { '\d':'', '\.':'' , '&':'et' }    
+df['nom'] = df['nom'].replace(dic_organisme,regex=True)
 df['nom'] = df['nom'].str.strip()
 
-df['prenom'] = df['prenom'].str.replace('\d','',regex=True)
-df['prenom'] = df['prenom'].str.replace('.','',regex=True)
-df['prenom'] = df['prenom'].str.replace('&','et',regex=True)
+df['prenom'] = df['prenom'].replace(dic_organisme,regex=True)
 df['prenom'] = df['prenom'].str.strip()
 
 # Email 
 
 df['email']=df['email'].astype(str)
-df['email']=df['email'].str.replace(',', '.', regex=True)
-df['email']=df['email'].str.replace(';', '.', regex=True)
-df['email']=df['email'].str.replace('ç', 'c', regex=True)
-df['email']=df['email'].str.replace('é', 'e', regex=True)
-df['email']=df['email'].str.replace('è', 'e', regex=True)
+dic_email = {',':'.' , ';':'.' , 'ç':'c' , 'é':'e', 'è':'e' }
+df['email']=df['email'].replace(dic_email, regex=True)
 df['email']=df['email'].str.strip()
     
 # Consider date as a string, change date dd-mm-yyyy > yyyy-mm-dd
@@ -144,22 +140,13 @@ df['adresse']=df['adresse'].str.strip()
 df['cp']=df['cp'].astype(str)
 df['cp']=df['cp'].str.replace('\.0$', '', regex=True)
 
-
 # clean mobile
 
-
 df['mobile']=df['mobile'].astype(str)
-df['mobile']=df['mobile'].str.replace('\.0$', '', regex=True)
-df['mobile']=df['mobile'].str.replace(' ', '', regex=True)
-df['mobile']=df['mobile'].str.replace('.', '', regex=True)
-df['mobile']=df['mobile'].str.replace('-', '', regex=True)
-df['mobile']=df['mobile'].str.replace('_', '', regex=True)
-df['mobile']=df['mobile'].str.replace('(', '', regex=True)
-df['mobile']=df['mobile'].str.replace(')', '', regex=True)
-df['mobile']=df['mobile'].str.replace('^06', '+336', regex=True)
-df['mobile']=df['mobile'].str.replace('^07', '+337', regex=True)
-df['mobile']=df['mobile'].str.replace('^6', '+336', regex=True)
-df['mobile']=df['mobile'].str.replace('^7', '+337', regex=True)
+dic_mobile_character = {'\.0$':'' , ' ': '' , '\.': '' , '\-': '' , '\_': '' , '\(': '' , '\)': '', '\,':'' }
+dic_mobile_number = { '^06':'+336', '^07':'+337', '^6':'+336', '^7':'+337' }
+df['mobile']=df['mobile'].replace(dic_mobile_character, regex=True)
+df['mobile']=df['mobile'].replace(dic_mobile_number, regex=True)
 
     
 #remove duplicate email and mobile, keep first, keep row for duplicates
@@ -169,7 +156,7 @@ df.loc[df['email'].duplicated(), ['email']] = ''
 df.loc[df['mobile'].duplicated(), ['mobile']] = ''    
 
 
-# extract mobile and mobile phone
+# extract mobile and phone
 
 
 df.insert(loc=0, column='cleanMobile', value='N/A')
@@ -178,15 +165,11 @@ df.insert(loc=0, column='cleanFixe', value='N/A')
 df['cleanMobile'] =  df['mobile'].str.findall('^\+33.+')
 df['cleanFixe'] =  df['mobile'].str.findall('^0.+|^1.+|^2.+|^3.+|^4.+|^5.+|^8.+|^9.+')
 
-
+dic_clean_mobile = {'\[':'' ,'\]':'','\'':''}
 df['cleanMobile']=df['cleanMobile'].astype(str)
-df['cleanMobile']=df['cleanMobile'].str.replace('[', '', regex=True)
-df['cleanMobile']=df['cleanMobile'].str.replace(']', '', regex=True)
-df['cleanMobile']=df['cleanMobile'].str.replace('\'', '', regex=True)
+df['cleanMobile']=df['cleanMobile'].replace(dic_clean_mobile , regex=True)
 
 df['cleanFixe']=df['cleanFixe'].astype(str)
-df['cleanFixe']=df['cleanFixe'].str.replace('[', '', regex=True)
-df['cleanFixe']=df['cleanFixe'].str.replace(']', '', regex=True)
-df['cleanFixe']=df['cleanFixe'].str.replace('\'', '', regex=True)
+df['cleanFixe']=df['cleanFixe'].replace(dic_clean_mobile , regex=True)
 
-df.to_csv("/Users/VPV/Desktop/pandas/Out.csv",header=True,index=False,encoding="utf8")
+df.to_csv(my_clean_file,header=True,index=False,encoding="utf8")

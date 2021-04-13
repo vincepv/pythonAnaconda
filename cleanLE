@@ -1,56 +1,10 @@
-#Script DigitaleBox pour prétraitement des listes électorales 
-# 2020-05-19 V.1.8 - Vincent PAUL-VICTOR support@digitalebox.fr
-# 
-# PYTHON PANDAS NUMPY
-# 
-#
-# 1/ FORMAT DU CSV
-#
-# le fichier source doit être en 
-# __csv 
-# __séparateur , 
-# __utf-8
-#
-# 
-# 2/ RENOMMER LES COLONNES DU CSV
-#
-# Pas besoin de créer des colonnes vides, le script crée des colonnes si absentes 
-# Il faut impérativement renommer les colonnes existantes du csv :
-#
-# __'prenom' (colonnes avec l'ensemble des prénoms)
-# __'nomUsage' 
-# --'nomNaissance'
-# __'sexe' (civilité, genre)
-# __'numero' (1,2,31,371...)
-# __'rue' (rue du moulin, avenue pasteur...)
-# __'cp' (code postal)
-# __'ville'
-# __'numero bv' (colonne du numéro du bureau de vote)
-# __'date' (date de naissance au format jj/mm/aaaa)
-# __'note'
-# __'mot clef'
-# __'email'
-# __'mobile' 
-
-# EN CAS D'ERREUR : changer le nom des colonnes
-#
-# 3/ INDIQUER LE FICHIER A TRAITER
-#
-# 4/ INDIQUER LE FICHIER DE SORTIE
-
-
-# INDIQUER LE FICHIER A TRAITER
-
 import pandas as pd
 import numpy as np
 import math
 monFichier = '' 
 df = pd.read_csv(monFichier,low_memory = False)
 
-
-
-
-# creation de colonne si absent du fichier
+# check columns in csv
 
 if 'categorie' not in df:
 	df.insert(loc=0, column='categorie', value='N/A')    
@@ -96,7 +50,7 @@ else:
 df['nomUsage']=df['nomUsage'].fillna(df['nomNaissance'])
 
 
-# Change le format date dd-mm-yyyy > yyyy-mm-dd
+# date of birth in yyyy-mm-dd format
 
 
 df['date']=df['date'].astype(str)
@@ -113,7 +67,7 @@ df['date'] = df['date'].replace(['--na','--N/'],'N/A' , regex=True)
 df=df.drop(['jour', 'mois', 'annee'], axis=1)
 
 
-# Sexe change monsieur madame et les cellules vides par 0,1,2
+# clean gender
 
 df['sexe']=df['sexe'].fillna('0')
 df['sexe']=df['sexe'].astype(str)
@@ -124,7 +78,7 @@ df['sexe']=df['sexe'].replace(['monsieur','Monsieur','MONSIEUR','Mr', 'MR','M.',
 df['sexe']=df['sexe'].replace(['madame','Madame','MADAME','Ms','MS','Mme','MME','Mlle','MLLE','Mme','F','mme'],'1')    
 
 
-#Adresse enlever caractères spéciaux pour la geolocalisation
+# clean address
 
 
 df['numero']=df['numero'].astype(str)
@@ -138,7 +92,7 @@ df['adresse']=df['adresse'].str.replace('nan', '', regex=True)
 df['adresse']=df['adresse'].str.replace('N/A N/A', 'N/A', regex=True)
 
 
-# Code postal
+# clean zip
 
 df['cp']=df['cp'].fillna('N/A')
 df['cp']=df['cp'].astype(str)
@@ -146,13 +100,13 @@ df['cp']=df['cp'].str.replace('\.0$', '', regex=True)
 
 
 
-# Prenom garde 1er prenom uniquement
+# keep begining of first name
 
 df['prenom']=df['prenom'].str.split(n=1,expand=True)
 df['prenom']=df['prenom'].str.capitalize()
 
 
-# mot clef
+# keyword
 
 if 'numero bv' in df:
     df['numero bv']=df['numero bv'].astype(str)
@@ -170,7 +124,7 @@ df['mot clef']=df['mot clef'].str.replace('nan', '', regex=True)
 df['mot clef']=df['mot clef'].str.replace('^,', '', regex=True)
 df['mot clef']=df['mot clef'].str.replace(';', ',', regex=True)
 
-# mobile supprime caractères spéciaux
+# clean mobile
 
 df['mobile']=df['mobile'].fillna('N/A') 
 df['mobile']=df['mobile'].astype(str)
@@ -185,4 +139,18 @@ df['mobile']=df['mobile'].str.replace('^07', '+337', regex=True)
 df['mobile']=df['mobile'].str.replace('^6', '+336', regex=True)
 df['mobile']=df['mobile'].str.replace('^7', '+337', regex=True)
 
-df.to_csv("/Users/VPV/Desktop/pandas/Out.csv",header=True,index=False,encoding="utf8")
+
+# split dataframe in package
+
+max_number_line_file = 24000 
+number_chunk = math.ceil(len(df)/max_number_line_file)
+df=np.array_split(df,number_chunk)
+
+
+# df[0] = first array, last array df[n-1].
+
+i = number_chunk-1
+
+while i > -1 :
+    df[i].to_csv("/Users/VPV/Desktop/pandas/Out%s.csv" % i , header=True,index=False,encoding="utf8")
+    i= i-1
