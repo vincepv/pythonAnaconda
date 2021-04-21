@@ -17,6 +17,8 @@ def clean_electoral(mon_fichier):
         df.insert(loc=0, column='sexe', value='0')
     if 'prenom' not in df:
         df.insert(loc=0, column='prenom', value='prenom a renseigner')
+    else:
+        df['prenom'] = df['prenom'].fillna('A')
     if 'pays' not in df:
         df.insert(loc=0, column='pays', value='FR')
     else:
@@ -50,6 +52,9 @@ def clean_electoral(mon_fichier):
 
     # date of birth in yyyy-mm-dd format
     df['date'] = df['date'].astype(str)
+    # clean invalide date 00/00/1976 = 01/01/1976
+    df["date"] = df["date"].str.replace('^00', '01', regex=True)
+    df["date"] = df["date"].str.replace('/00/', '/01/', regex=True)
     df.insert(loc=0, column='jour', value='N/A')
     df.insert(loc=0, column='mois', value='N/A')
     df.insert(loc=0, column='annee', value='N/A')
