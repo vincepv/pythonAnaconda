@@ -36,6 +36,7 @@ def clean_file(my_file, motclef):
         df.insert(loc=0, column='mot clef', value=motclef)
     else:
         df['mot clef'] = motclef + "," + df['mot clef']
+        df['mot clef'] = df['mot clef'].str.strip(to_strip=",")
     if 'sexe' not in df:
         df.insert(loc=0, column='sexe', value='0')
     else :
@@ -73,9 +74,7 @@ def clean_file(my_file, motclef):
         df.insert(loc=0, column='date', value='N/A')
     if 'mobile' not in df:
         df.insert(loc=0, column='mobile', value='N/A')
-    else:
-        df['mobile'] = df['mobile'].fillna('')
-
+    
     if 'email' not in df:
         df.insert(loc=0, column='email', value='N/A')
     else:
