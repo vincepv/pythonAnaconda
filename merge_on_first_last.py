@@ -34,6 +34,5 @@ def merge_on_first_last(input1,input2):
     df2 = df2.drop_duplicates(subset=['prenom', 'nom'],keep=False)
     
     df = pd.merge(df1, df2, on=['prenom', 'nom'], how='outer', indicator='Source')
-    
-    
+
     df.to_csv('/Users/VPV/Desktop/pandas/MergeFirstlast.csv', encoding='utf8', index=False)

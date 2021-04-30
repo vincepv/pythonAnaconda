@@ -1,24 +1,27 @@
-# Script DigitaleBox for clean csv file
-# csv delimitor , encoding utf-8
-# column must be renamed
-# __'prenom' 
-# __'nom' 
-# __'sexe' 
-# --'adresse'
-# __'cp' 
-# __'ville'
-# __'date' (date de naissance au format jj/mm/aaaa)
-# __'note'
-# __'mot clef'
-# __'email'
-# __'mobile' 
-
-
 import pandas as pd
 import numpy as np
 
-
 def clean_file(my_file, motclef):
+    """ 
+    clean csv file
+
+    2 arg = file_name_to_clean and keyword
+
+    csv delimitor , encoding utf-8
+    column must be renamed
+    'prenom' 
+    'nom' 
+    'sexe' 
+    'adresse'
+    'cp' 
+    'ville'
+    'date' format dd/m/yyyy
+    'note'
+    'mot clef'
+    'email'
+    'mobile' 
+    
+    """
 
     df = pd.read_csv(my_file, low_memory=False)
 
@@ -135,7 +138,7 @@ def clean_file(my_file, motclef):
     df['mobile'] = df['mobile'].replace(dic_mobile_character, regex=True)
     df['mobile'] = df['mobile'].replace(dic_mobile_number, regex=True)
 
-    #remove duplicate email and mobile, keep first, keep row for duplicates
+    # remove duplicate email and mobile, keep first, keep row for duplicates
     df = df.drop_duplicates()
     df.loc[df['email'].duplicated(), ['email']] = ''
     df.loc[df['mobile'].duplicated(), ['mobile']] = ''
