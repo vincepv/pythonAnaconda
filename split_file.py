@@ -5,7 +5,7 @@ import math
 def split_file(my_file_to_split):
 
     df = pd.read_csv(my_file_to_split, low_memory=False, encoding='latin1')
-    max_number_line_file = 24000
+    max_number_line_file = 24500
     number_chunk = math.ceil(len(df)/max_number_line_file)
     df = np.array_split(df, number_chunk)
     # df[0] = first array, last array df[n-1].

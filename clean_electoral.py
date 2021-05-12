@@ -23,9 +23,7 @@ def clean_electoral(my_file_to_clean):
     """
 
     df = pd.read_csv(my_file_to_clean, low_memory=False)
-    df = df.rename(columns={"numéro de voie": "numero", "commune": "ville", "code du bureau de vote": "numero bv",
-                            "libellé de voie": "rue", "code postal": "cp", "date de naissance": "date",
-                            "nom d'usage": "nomUsage", "nom de naissance": "nomNaissance", "prénoms": "prenom"})
+    df = df.rename(columns={"numéro de voie": "numero", "commune": "ville", "code du bureau de vote": "numero bv","libellé de voie": "rue", "code postal": "cp", "date de naissance": "date","nom d'usage": "nomUsage", "nom de naissance": "nomNaissance", "prénoms": "prenom"})
     # check columns in csv
     if 'categorie' not in df:
         df.insert(loc=0, column='categorie', value='3')
@@ -122,7 +120,7 @@ def clean_electoral(my_file_to_clean):
     if 'numero bv' in df:
         df['numero bv'] = df['numero bv'].astype(str)
         #creation des mot clefs : BV xxx + LE
-        df['mot clef'] = df['mot clef']+',BV '+df['numero bv']+',LE2020,'+df['canton du bureau de vote'].str.upper()
+        df['mot clef'] = df['mot clef']+',BV '+df['numero bv']+',LE2020'#+df['canton du bureau de vote'].str.upper()
 
 
     df['mot clef'] = df['mot clef'].astype(str)
