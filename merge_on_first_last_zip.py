@@ -1,4 +1,5 @@
 import pandas as pd
+from my_pandas_folder import *
 # csv utf8 
 def merge_on_first_last_zip(input1,input2):
     # input1 = electoral file
@@ -25,17 +26,17 @@ def merge_on_first_last_zip(input1,input2):
     
     # create duplicate file to tracks duplicate contact not in merge file
 
-    dfdup1 = df1[df1.duplicated(['prenom', 'nom', 'nomNaissance','date'], keep=False)]
-    dfdup2 = df2[df2.duplicated(['prenom', 'nom',  'cp'], keep=False)]
+    dfdup1 = df1[df1.duplicated(['prenom', 'nom', 'cp'], keep=False)]
+    dfdup2 = df2[df2.duplicated(['prenom', 'nom', 'cp'], keep=False)]
 
-    dfdup1.to_csv('/Users/VPV/Desktop/pandas/Duplicate1.csv', encoding='utf8', index=False)
-    dfdup2.to_csv('/Users/VPV/Desktop/pandas/DuplicateAnnuaire.csv', encoding='utf8', index=False)
+    dfdup1.to_csv(my_pandas_folder+'/Duplicate1.csv', encoding='utf8', index=False)
+    dfdup2.to_csv(my_pandas_folder+'/Duplicate2.csv', encoding='utf8', index=False)
 
 
     # remove duplicate before merge, avoid to merge false data
 
-    df1 = df1.drop_duplicates(subset=['prenom', 'nom', 'nomNaissance','date'],keep=False)
+    df1 = df1.drop_duplicates(subset=['prenom', 'nom', 'cp'],keep=False)
     df2 = df2.drop_duplicates(subset=['prenom', 'nom', 'cp'],keep=False)
     df = pd.merge(df1, df2, on=['prenom', 'nom', 'cp'], how='outer', indicator='Source')
 
-    df.to_csv('/Users/VPV/Desktop/pandas/MergeFirstLastZip.csv', encoding='utf8', index=False)
+    df.to_csv(my_pandas_folder+'/MergeFirstLastZip.csv', encoding='utf8', index=False)

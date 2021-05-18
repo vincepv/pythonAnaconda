@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from my_pandas_folder import *
 
 def clean_file(my_file, motclef):
     """ 
@@ -157,4 +158,4 @@ def clean_file(my_file, motclef):
     df['cleanFixe'] = df['cleanFixe'].astype(str)
     df['cleanFixe'] = df['cleanFixe'].replace(dic_clean_mobile, regex=True)
 
-    df.to_csv('/Users/VPV/Desktop/pandas/DraftCleanFile.csv', header=True, index=False, encoding="utf8")
+    df.to_csv(my_pandas_folder+'/DraftCleanFile.csv', header=True, index=False, encoding="utf8")

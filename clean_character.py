@@ -1,5 +1,6 @@
 # clean csv utf8 file 
 import pandas as pd
+from my_pandas_folder import *
 
 def clean_character(file_to_clean):
 	
@@ -18,4 +19,4 @@ def clean_character(file_to_clean):
 	df = df.replace('Ãª', 'ê', regex=True)
 	df = df.replace('Ãˆ', 'E', regex=True)
 
-	df.to_csv('/Users/VPV/Desktop/cleanCharacter.csv', encoding= 'utf8', index=False)
+	df.to_csv(my_pandas_folder+"/clean_character.csv", encoding= 'utf8', index=False)

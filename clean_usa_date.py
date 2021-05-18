@@ -1,5 +1,5 @@
-
 import pandas as pd
+from my_pandas_folder import *
 
 def clean_usa_date(my_file):
     df = pd.read_csv(my_file, low_memory=False)
@@ -44,4 +44,4 @@ def clean_usa_date(my_file):
     df['date'] = df['date'].replace(['--na','--N/'],'N/A' , regex=True)
     df = df.drop(['jour', 'mois', 'annee'], axis=1)
 
-    df.to_csv("/Users/VPV/Desktop/pandas/Out.csv",header=True,index=False,encoding="utf8",sep=',')
+    df.to_csv(my_pandas_folder"/clean_usa_date.csv",header=True,index=False,encoding="utf8",sep=',')

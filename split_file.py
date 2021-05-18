@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import math
+from my_pandas_folder import *
 
 def split_file(my_file_to_split):
 
@@ -11,5 +12,5 @@ def split_file(my_file_to_split):
     # df[0] = first array, last array df[n-1].
     i = number_chunk - 1
     while i > -1:
-        df[i].to_csv("/Users/VPV/Desktop/pandas/part_%s.csv" % i, header=True, index=False, encoding='latin1')
+        df[i].to_csv(my_pandas_folder+"/part_%s.csv" % i, header=True, index=False, encoding='latin1')
         i = i - 1

@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+from my_pandas_folder import *
+from rename_column import rename_column
 
 
 def clean_electoral(my_file_to_clean):
@@ -23,7 +25,7 @@ def clean_electoral(my_file_to_clean):
     """
 
     df = pd.read_csv(my_file_to_clean, low_memory=False)
-    df = df.rename(columns={"numéro de voie": "numero", "commune": "ville", "code du bureau de vote": "numero bv","libellé de voie": "rue", "code postal": "cp", "date de naissance": "date","nom d'usage": "nomUsage", "nom de naissance": "nomNaissance", "prénoms": "prenom"})
+    df = df.rename(columns=rename_column)
     # check columns in csv
     if 'categorie' not in df:
         df.insert(loc=0, column='categorie', value='3')
@@ -94,11 +96,12 @@ def clean_electoral(my_file_to_clean):
     df['sexe'] = df['sexe'].replace(['monsieur', 'Monsieur', 'MONSIEUR', 'Mr', 'MR', 'M.', 'M', 'mr', 'm'], '2')
     df['sexe'] = df['sexe'].replace(['madame', 'Madame', 'MADAME', 'Ms', 'MS', 'Mme', 'MME', 'Mlle', 'MLLE', 'Mme', 'F', 'mme'], '1')
 
-    # clean address
+    # clean address need to fix : if address already exist, it delete address
 
     df['numero'] = df['numero'].astype(str)
     df['rue'] = df['rue'].astype(str)
     df['adresse'] = df['numero']+' '+df['rue']
+
     df['adresse'] = df['adresse'].str.replace(',', '', regex=True)
     df['adresse'] = df['adresse'].str.replace('^ ', '', regex=True)
     df['adresse'] = df['adresse'].str.replace(' $', '', regex=True)
@@ -120,7 +123,7 @@ def clean_electoral(my_file_to_clean):
     if 'numero bv' in df:
         df['numero bv'] = df['numero bv'].astype(str)
         #creation des mot clefs : BV xxx + LE
-        df['mot clef'] = df['mot clef']+',BV '+df['numero bv']+',LE2020'#+df['canton du bureau de vote'].str.upper()
+        df['mot clef'] = df['mot clef']+',BV '+df['numero bv']+',LE2021'#+df['canton du bureau de vote'].str.upper()
 
 
     df['mot clef'] = df['mot clef'].astype(str)
@@ -138,4 +141,4 @@ def clean_electoral(my_file_to_clean):
     
     df = df.drop_duplicates(subset=['prenom', 'nomUsage', 'nomNaissance', 'date'],keep='first')
     
-    df.to_csv("/Users/VPV/Desktop/pandas/clean_electoral.csv", header=True, index=False, encoding="utf8")
+    df.to_csv(my_pandas_folder+"/clean_electoral.csv", header=True, index=False, encoding="utf8")

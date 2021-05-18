@@ -1,4 +1,5 @@
 import pandas as pd
+from my_pandas_folder import *
 def extract_line(my_file,column_name,value_to_extract):
     """
     :param my_file: name of the file to process
@@ -10,4 +11,4 @@ def extract_line(my_file,column_name,value_to_extract):
     """
     df = pd.read_csv(my_file, low_memory=False)
     df_extract = df.loc[(df[column_name] == value_to_extract)]
-    df_extract.to_csv('/Users/VPV/Desktop/pandas/extract.csv', header=True, index=False, encoding="utf8")
+    df_extract.to_csv(my_pandas_folder+'/extract.csv', header=True, index=False, encoding="utf8")

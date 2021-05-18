@@ -1,5 +1,5 @@
 import pandas as pd
-
+from my_pandas_folder import *
 
 def extract_elder(my_file_with_elder):
 
@@ -8,4 +8,4 @@ def extract_elder(my_file_with_elder):
     df['date_year'] = df['date_year'].astype(int)
     limit = 1956
     df = df.drop(df[(df['date_year'] > limit)].index)
-    df.to_csv('/Users/VPV/Desktop/pandas/DraftElder.csv', encoding='utf8', index=False)
+    df.to_csv(my_pandas_folder+'/DraftElder.csv', encoding='utf8', index=False)
