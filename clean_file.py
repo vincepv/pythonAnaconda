@@ -24,7 +24,7 @@ def clean_file(my_file, motclef):
     
     """
 
-    df = pd.read_csv(my_file, low_memory=False)
+    df = pd.read_csv(my_file, low_memory=False, sep=",",encoding="utf-8")
 
     # clean header
     df.columns = df.columns.str.lower()

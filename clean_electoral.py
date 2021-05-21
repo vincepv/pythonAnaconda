@@ -123,7 +123,7 @@ def clean_electoral(my_file_to_clean):
     if 'numero bv' in df:
         df['numero bv'] = df['numero bv'].astype(str)
         #creation des mot clefs : BV xxx + LE
-        df['mot clef'] = df['mot clef']+',BV '+df['numero bv']+',LE2021'#+df['canton du bureau de vote'].str.upper()
+        df['mot clef'] = df['mot clef']+',BV '+df['numero bv']+',LE2021'
 
 
     df['mot clef'] = df['mot clef'].astype(str)
