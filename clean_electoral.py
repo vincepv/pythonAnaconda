@@ -66,6 +66,11 @@ def clean_electoral(my_file_to_clean):
         df.insert(loc=0, column='email', value='N/A')
     else:
         df['email'] = df['email'].fillna('N/A')
+    
+    if 'complément 1' and 'complément 2' and 'lieu-dit' in df:
+        df['adresse2'] = df['complément 1'].map(str) + " " +df['complément 2'].map(str) + " " +df['lieu-dit'].map(str)
+        df['adresse2'] = df['adresse2'].str.replace('nan', '', regex=True)
+        df['adresse2'] = df['adresse2'].str.strip()
 
     # si le nom usage est vide, on le remplit avec le nom de naissance, evite un nom usage vide
     df['nomUsage'] = df['nomUsage'].fillna(df['nomNaissance'])
@@ -82,7 +87,7 @@ def clean_electoral(my_file_to_clean):
     df['mois'] = df['date'].str[3:-5]
     df['annee'] = df['date'].str[6:]
     df['date'] = df['annee'] + "-" + df['mois'] + "-" + df['jour']
-    # transforme les colonnes vides en N/A
+    # clean empty cell in N/A
     df['date'] = df['date'].replace(['--na', '--N/'], 'N/A', regex=True)
     df = df.drop(['jour', 'mois', 'annee'], axis=1)
 
@@ -96,7 +101,7 @@ def clean_electoral(my_file_to_clean):
     df['sexe'] = df['sexe'].replace(['monsieur', 'Monsieur', 'MONSIEUR', 'Mr', 'MR', 'M.', 'M', 'mr', 'm'], '2')
     df['sexe'] = df['sexe'].replace(['madame', 'Madame', 'MADAME', 'Ms', 'MS', 'Mme', 'MME', 'Mlle', 'MLLE', 'Mme', 'F', 'mme'], '1')
 
-    # clean address need to fix : if address already exist, it delete address
+    # clean address . Need to fix : if address column already exist, it delete address
 
     df['numero'] = df['numero'].astype(str)
     df['rue'] = df['rue'].astype(str)
