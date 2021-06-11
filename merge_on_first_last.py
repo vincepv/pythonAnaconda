@@ -3,6 +3,13 @@ from my_pandas_folder import *
 # csv utf8 
 
 def merge_on_first_last(input1,input2):
+    """
+    input1 is the electoral list
+    input2 is the mobile or email to merge with input1
+    
+    
+    
+    """
     # input1 = electoral file
     df1 = pd.read_csv(input1, low_memory=False)
     df2 = pd.read_csv(input2, low_memory=False)

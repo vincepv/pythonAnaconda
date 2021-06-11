@@ -1,10 +1,11 @@
-# convert excel folder in one master utf8 csv file
-
 import pandas as pd
 import glob
 from my_pandas_folder import *
 def excel_merge(excel_folder):
-    
+    """
+    convert excel folder in one master utf8 csv file
+
+    """
     
     all_files = glob.glob(excel_folder + "/*.xlsx")
     li = []
