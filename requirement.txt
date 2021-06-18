@@ -1,0 +1,11 @@
+// python version
+
+python 3
+
+
+// Libraries
+
+pandas
+numpy
+math
+glob

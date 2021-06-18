@@ -15,7 +15,6 @@ def merge_on_electoral_phonebook (electoral_list,phone_book):
 
     # avoid case sensitive issue. Marc and MARC is different during merge process
   
-    
     df_electoral['prenom'] = df_electoral['prenom'].str.strip()
     df_electoral['nom'] = df_electoral['nom'].str.strip()
     df_electoral['prenom'] = df_electoral['prenom'].str.capitalize()
@@ -33,7 +32,7 @@ def merge_on_electoral_phonebook (electoral_list,phone_book):
     df_dup_phonebook = df_phonebook[df_phonebook.duplicated(['prenom', 'nom'], keep=False)]
     
     df_dup_electoral.to_csv(my_pandas_folder+'/DuplicateElectoral.csv', encoding='utf8', index=False)
-    df_dup_phonebook.to_csv(my_pandas_folder+'/DuplicatePhoneBook.csv', encoding='utf8', index=False)
+    df_dup_phonebook.to_csv(my_pandas_folder+'/DuplicatePhoneBookOnly.csv', encoding='utf8', index=False)
     
     # remove duplicate before merge, to avoid merge data to wrong contact
 
@@ -44,7 +43,7 @@ def merge_on_electoral_phonebook (electoral_list,phone_book):
     
     # add duplicate phonebook to dataframe to avoid losing phonebook data.
     frames = [df_merge, df_dup_phonebook]
-    df = pd.concat(frames, sort=True)
+    df = pd.concat(frames, sort=False)
     
     # clean ".O" string
     df['cp'] = df['cp'].astype(str)
@@ -63,4 +62,4 @@ def merge_on_electoral_phonebook (electoral_list,phone_book):
     df['categorie'] = df['categorie'].str.replace('\.0', '', regex=True)
     df['categorie'] = df['categorie'].str.replace('nan', '', regex=True)
     
-    df.to_csv(my_pandas_folder+'/MergePhoneBook.csv', encoding='utf8', index=False)
+    df.to_csv(my_pandas_folder+'/MergePhoneBookWithDuplicate.csv', encoding='utf8', index=False)
