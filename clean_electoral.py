@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from my_pandas_folder import *
 from rename_column import rename_column
 

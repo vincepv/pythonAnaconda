@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from my_pandas_folder import *
 
 def clean_file(my_file, motclef):
