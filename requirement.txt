@@ -1,10 +1,7 @@
 // python version
-
 python 3
 
-
 // Libraries
-
 pandas
 math
 glob
